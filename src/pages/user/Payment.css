@@ -1,0 +1,70 @@
+.payment-container {
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+.payment-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 32px;
+  color: #333;
+  letter-spacing: 2px;
+}
+
+.payment-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.payment-list-book{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 20px;
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.payment-info{
+    width: 50%;
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.payment-list-book-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-list-book-item-image{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.payment-list-book-item-info{
+    flex: 1;
+}
+
+.payment-list-book-item-name{
+    font-weight: 700;
+}
+
+.payment-list-book-item-price{
+    font-weight: 600;
+    font-size: 15px;
+    color: #1976d2;
+}
+
+.payment-list-book-item-total{
+    font-weight: 700;
+    font-size: 16px;
+    color: #1976d2;
+}

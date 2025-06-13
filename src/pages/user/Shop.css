@@ -1,0 +1,110 @@
+.shop-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  /* padding: 32px 16px; */
+  /* background-color: #f0f0f0;
+  height: 100%; */
+}
+
+.shop-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 32px;
+  color: #333;
+  letter-spacing: 2px;
+}
+
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.book-card {
+  background: #fff;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  width: calc(25% - 12px);
+  min-width: 250px;
+  padding: 16px;
+  justify-self: center;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.book-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+.book-price {
+  position: absolute;
+  left: 16px;
+  background: #c0392b;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.3rem;
+  padding: 6px 16px;
+  border-radius: 6px;
+  z-index: 2;
+  letter-spacing: 1px;
+}
+
+.book-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  margin-top: 8px;
+}
+
+.book-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.book-info {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 16px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.book-info span {
+  color: #2d2d2d;
+  font-weight: 400;
+}
+
+
+.add-to-cart-btn {
+  width: 100%;
+  background: #af1b1b;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-to-cart-btn:hover {
+  background: #e94444;
+}

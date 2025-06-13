@@ -1,0 +1,135 @@
+.user-header {
+  background: #fff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 80px;
+}
+
+.user-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 1.5rem 10%;
+}
+
+.user-header .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #e94444;
+  text-decoration: none;
+}
+
+.user-header .navbar {
+  display: flex;
+  gap: 1rem;
+}
+
+.user-header .navbar a {
+  color: #333;
+  text-decoration:none;
+  font-size: 1.4rem;
+  transition: 0.2s linear;
+}
+
+.user-header .navbar a:hover {
+  color: #ff6b6b;
+}
+
+.user-header .icons {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.user-header .icons a,
+.user-header .icons div {
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.user-header .icons a:hover,
+.user-header .icons div:hover {
+  color: #ff6b6b;
+}
+
+.user-header .user-box {
+  position: absolute;
+  top: 110%;
+  right: 7%;
+  background: #fff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  width: 30rem;
+  display: none;
+}
+
+.user-header .user-box.active {
+  display: block;
+}
+
+.user-header .user-box p {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.user-header .user-box p span {
+  color: #ff6b6b;
+}
+
+.user-header .user-box .delete-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: #ff6b6b;
+  color: #fff;
+  font-size: 1.6rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  margin-top: 1rem;
+}
+
+.user-header .user-box .delete-btn:hover {
+  background: #ff5252;
+}
+
+@media (max-width: 991px) {
+  .user-header .container {
+    padding: 1.5rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-header .navbar {
+    position: absolute;
+    top: 99%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
+    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    display: none;
+  }
+
+  .user-header .navbar.active {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    display: block;
+  }
+
+  .user-header .navbar a {
+    display: block;
+    margin: 1rem;
+    font-size: 1.6rem;
+  }
+}

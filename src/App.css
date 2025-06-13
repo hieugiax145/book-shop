@@ -1,38 +1,205 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
+  margin: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.search-box {
+  display: flex;
+  position: relative;
+  width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.search-box input{
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.table-data {
+  /* width: 100%; */
+  padding: rem;
+  border-radius: 10px;
+  background-color: #fff;
+  text-overflow: ellipsis;
+  overflow-x:auto;
+  -webkit-overflow-scrolling: touch;
+
+}
+
+.table-data table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.expand-column {
+  width: 75%;
+}
+
+.table-data table th, .table-data table td {
+  text-align: left;
+  padding: 1rem;
+  white-space: nowrap;
+}
+
+.table-data table th {
+  background-color: #f0f0f0;
+}
+
+.table-data table td {
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  /* position: relative; */
+}
+
+
+form input, form textarea, form select{
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.status-container {
+  display: inline-block;
+  padding: 4px 16px;
+  border: 2px solid #ff9800;
+  border-radius: 20px;
+  background: #fff7f0;
+  color: #ff9800;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.status-container.pending {
+  border-color: #ff9800;
+  color: #ff9800;
+}
+.status-container.completed {
+  border-color: #4caf50;
+  color: #4caf50;
+}
+.status-container.cancelled {
+  border-color: #f44336;
+  color: #f44336;
+}
+.status-container.processing {
+  border-color: #2196f3;
+  color: #2196f3;
+}
+
+.status-memu {
+  position: relative;
+  cursor: pointer;
+}
+
+.status-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+.status-memu:hover .status-dropdown {
+  display: block;
+}
+
+.status-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.status-item:hover {
+  background-color: #f5f5f5;
+}
+
+.sale-screen {
+  height: 100vh;
+}
+
+.sale-content {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  gap: 1rem;
+  height: 100%;
+}
+
+.sale-list-book {
+  flex: 1;
+  height: 100%;
+  margin-right: calc(300px + 1rem);
+  overflow-x: auto;
+}
+
+.sale-info {
+  width: 300px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 1rem;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  overflow-y: auto;
 }
 
-.App-link {
-  color: #61dafb;
+
+.sale-info-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #af1b1b;
+}
+
+label {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
