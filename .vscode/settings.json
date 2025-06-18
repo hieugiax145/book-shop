@@ -7,7 +7,7 @@
   "editor.insertSpaces": true,
   "editor.detectIndentation": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "files.eol": "\n",
   "files.insertFinalNewline": true,

@@ -1,0 +1,141 @@
+.orders-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    /* padding: 32px 16px; */
+    /* background-color: #f0f0f0;
+  height: 100%; */
+}
+
+.orders-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 32px;
+    color: #333;
+    letter-spacing: 2px;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.orders-item {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    background: #fafafa;
+}
+
+.orders-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #ee4d2d;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+}
+
+.orders-item-header-title {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.orders-item-header-status {
+    font-size: 1rem;
+    color: #ee4d2d;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+
+.orders-product {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 16px 0;
+}
+
+.orders-product:last-child {
+    border-bottom: none;
+}
+
+.orders-product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 20px;
+    border: 1px solid #ddd;
+}
+
+.orders-product-info {
+    flex: 1;
+}
+
+.orders-product-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.orders-product-variant {
+    color: #888;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.orders-product-qty {
+    color: #444;
+    font-size: 0.95rem;
+}
+
+.orders-product-price {
+    min-width: 120px;
+    text-align: right;
+}
+
+.orders-product-old-price {
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-right: 8px;
+}
+
+.orders-product-current-price {
+    color: #ee4d2d;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.orders-item-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 16px;
+}
+
+.orders-item-total {
+    font-size: 1.2rem;
+    color: #ee4d2d;
+    font-weight: bold;
+}
+
+.orders-item-actions button {
+    background: #ee4d2d;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 18px;
+    margin-left: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.orders-item-actions button:hover {
+    background: #d84315;
+}

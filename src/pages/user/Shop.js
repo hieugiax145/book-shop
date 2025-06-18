@@ -1,51 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Shop.css";
-
-const books = [
-  {
-    sachId: 1,
-    ten: "Dế mèn phiêu lưu ký",
-    tacGia: "Tô Hoài",
-    nhaXuatBan: "Kim Đồng",
-    namXuatBan: 2000,
-    donGia: 20000,
-    hinhAnh:
-      "https://cdn2.tuoitre.vn/thumb_w/480/471584752817336320/2025/5/21/base64-17478176868771275704421.png",
-  },
-  {
-    sachId: 2,
-    ten: "Tắt đèn",
-    tacGia: "Ngô Tất Tố",
-    nhaXuatBan: "Bibi",
-    namXuatBan: 2009,
-    donGia: 78000,
-    hinhAnh:
-      "https://cdn2.tuoitre.vn/thumb_w/480/471584752817336320/2025/5/21/base64-17478176868771275704421.png",
-  },
-  {
-    sachId: 3,
-    ten: "Chiếc lược ngà",
-    tacGia: "Nguyễn Quang Sáng",
-    nhaXuatBan: "Hạnh Phúc",
-    namXuatBan: 2022,
-    donGia: 50000,
-    hinhAnh:
-      "https://cdn2.tuoitre.vn/thumb_w/480/471584752817336320/2025/5/21/base64-17478176868771275704421.png",
-  },
-  {
-    sachId: 4,
-    ten: "Chiếc lược ngà",
-    tacGia: "Nguyễn Quang Sáng",
-    nhaXuatBan: "Hạnh Phúc",
-    namXuatBan: 2022,
-    donGia: 50000,
-    hinhAnh:
-      "https://cdn2.tuoitre.vn/thumb_w/480/471584752817336320/2025/5/21/base64-17478176868771275704421.png",
-  },
-];
+import apiServices from "../../services/apiServices";
+import { toast } from "react-toastify";
+import CommonUtils from "../../utils/CommonUtils";
 
 const Shop = () => {
   const [quantities, setQuantities] = useState({});
+  const [books, setBooks] = useState([]);
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await apiServices.shopGetBooks();
+      if (response.success) {
+        setBooks(response.data.sachs);
+      }
+    } catch (error) {
+      toast.error("Không thể lấy danh sách sách");
+    }
+  };
+
+  const handleAddToCart = async (id) => {
+    const response = await apiServices.addToCart({
+      sachId: id,
+      soLuong: 1,
+    });
+    if (response.success) {
+      toast.success("Thêm vào giỏ hàng thành công");
+    }
+  };
 
   const handleQuantityChange = (id, value) => {
     setQuantities({ ...quantities, [id]: value });
@@ -59,19 +44,25 @@ const Shop = () => {
           {books.map((book) => (
             <div className="book-card" key={book.sachId}>
               <div className="book-price">
-                {book.donGia.toLocaleString("vi-VN", {
-                  minimumFractionDigits: 0,
-                })}
-                VNĐ
+                {CommonUtils.formatPrice(book.donGia)}
               </div>
-              <img className="book-image" src={book.hinhAnh} alt={book.ten} />
+              <img
+                className="book-image"
+                src={`${process.env.REACT_APP_API_URL}/${book.hinhAnh}`}
+                alt={book.ten}
+              />
               <div className="book-title">{book.ten}</div>
               <div className="book-info">
                 <div>
                   <span>{book.tacGia}</span>
                 </div>
               </div>
-              <button className="add-to-cart-btn">Thêm vào giỏ hàng</button>
+              <button
+                className="add-to-cart-btn"
+                onClick={() => handleAddToCart(book.sachId)}
+              >
+                Thêm vào giỏ hàng
+              </button>
             </div>
           ))}
         </div>

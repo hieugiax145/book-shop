@@ -67,29 +67,38 @@ form input, form textarea, form select{
 .status-container {
   display: inline-block;
   padding: 4px 16px;
-  border: 2px solid #ff9800;
+  border: 2px solid #000;
   border-radius: 20px;
-  background: #fff7f0;
-  color: #ff9800;
+  /* background: #fff7f0; */
+  color: #000;
   font-weight: 500;
   font-size: 15px;
 }
+
 
 .status-container.pending {
   border-color: #ff9800;
   color: #ff9800;
 }
-.status-container.completed {
+
+.status-container.confirmed {
+  border-color: #2196f3;
+  color: #2196f3;
+}
+
+.status-container.shipping {
+  border-color: #2196f3;
+  color: #2196f3;
+}
+
+.status-container.delivered, .status-container.completed {
   border-color: #4caf50;
   color: #4caf50;
 }
+
 .status-container.cancelled {
   border-color: #f44336;
   color: #f44336;
-}
-.status-container.processing {
-  border-color: #2196f3;
-  color: #2196f3;
 }
 
 .status-memu {
@@ -203,3 +212,5 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+

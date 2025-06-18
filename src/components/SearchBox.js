@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./SearchBox.css";
 
-const SearchBox = ({ placeholder, onSelect, onSearch }) => {
+const SearchBox = ({ isSearchBox = false, placeholder, onSelect, onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
@@ -24,16 +24,19 @@ const SearchBox = ({ placeholder, onSelect, onSearch }) => {
     const value = e.target.value;
     setSearchTerm(value);
 
-    if (value.trim()) {
-      if (onSearch) {
-        const results = await onSearch(value);
+    // if (value) {
+      if (onSearch && !isSearchBox) {
+        const results = await onSearch(value.trim());
         setSearchResults(results);
         setShowResults(true);
       }
-    } else {
-      setSearchResults([]);
-      setShowResults(false);
-    }
+      if (onSearch && isSearchBox) {
+        onSearch(value.trim());
+      }
+    // } else {
+    //   setSearchResults([]);
+    //   setShowResults(false);
+    // }
   };
 
   const handleSelect = (item) => {
@@ -52,7 +55,7 @@ const SearchBox = ({ placeholder, onSelect, onSearch }) => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      {showResults && searchResults.length > 0 && (
+      {showResults && searchResults.length > 0 &&  (
         <div className="search-results">
           {searchResults.map((item) => (
             <div

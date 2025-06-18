@@ -34,6 +34,15 @@
     background-color: #fafafa;
     padding: 20px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.payment-info-customer{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .payment-list-book-item{
@@ -60,11 +69,20 @@
 .payment-list-book-item-price{
     font-weight: 600;
     font-size: 15px;
-    color: #1976d2;
+    color: #444;
 }
 
 .payment-list-book-item-total{
+    flex: 1;
     font-weight: 700;
     font-size: 16px;
     color: #1976d2;
+    text-align: right;
 }
+
+.payment-method-group{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+

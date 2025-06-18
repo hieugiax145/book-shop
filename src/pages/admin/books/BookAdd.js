@@ -49,15 +49,25 @@ const BookAdd = ({ isEdit = false }) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
+    const formDataToSend = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (key === "hinhAnh" && formData[key]) {
+        formDataToSend.append("image", formData[key]);
+      } else {
+        formDataToSend.append(key, formData[key]);
+      }
+    });
+
     if (isEdit) {
-      console.log(sachId);
-      const response = await apiServices.adminUpdateBook(sachId, formData);
+      const response = await apiServices.adminUpdateBook(sachId, formDataToSend);
       if (response.success) {
         toast.success("Cập nhật sách thành công");
         navigate(-1);
       }
     } else {
-      const response = await apiServices.adminAddBook(formData);
+      const response = await apiServices.adminAddBook(formDataToSend);
       if (response.success) {
         toast.success("Thêm sách thành công");
         navigate(-1);
@@ -255,10 +265,14 @@ const BookAdd = ({ isEdit = false }) => {
                 {formData.hinhAnh && (
                   <div style={{ marginTop: "1rem" }}>
                     <img
-                      src={URL.createObjectURL(formData.hinhAnh)}
+                      src={`${
+                        isEdit
+                          ? `${process.env.REACT_APP_API_URL}/${formData.hinhAnh}`
+                          : URL.createObjectURL(formData.hinhAnh)
+                      }`}
                       alt="Preview"
                       style={{
-                        width: "100%",
+                        width: "70%",
                         aspectRatio: "3/4",
                         objectFit: "cover",
                       }}

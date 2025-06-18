@@ -7,24 +7,34 @@ import { IconButton } from "@mui/material";
 import apiServices from "../../../services/apiServices";
 import CustomDialog from "../../../components/CustomDialog";
 import { toast } from "react-toastify";
+import CommonUtils from "../../../utils/CommonUtils";
 
-const formatCurrency = (value) => {
-  return value === 0 ? "0đ" : value.toLocaleString() + "đ";
-};
+const tableColumns = [
+  <th key="stt">STT</th>,
+  <th key="action"></th>,
+  <th key="sku">ID</th>,
+  <th key="name">TÊN</th>,
+  <th key="stock">TỒN KHO</th>,
+  <th key="quantity">SỐ LƯỢNG</th>,
+  <th key="price">ĐƠN GIÁ</th>,
+  <th key="total">THÀNH TIỀN</th>,
+];
 
 const paymentMethods = [
-  { key: "cash", label: "Tiền mặt" },
-  { key: "bank", label: "Chuyển khoản" },
+  { key: "CASH", label: "Tiền mặt" },
+  { key: "BANK", label: "Chuyển khoản" },
 ];
 
 const PlaceOrder = () => {
-  const [selectedPayment, setSelectedPayment] = useState("cash");
+  const [selectedPayment, setSelectedPayment] = useState("CASH");
   const [books, setBooks] = useState([]);
   const [formData, setFormData] = useState({
-    customerName: "",
-    customerPhone: "",
-    customerAddress: "",
-    customerPayment: 0,
+    tenKhachHang: "",
+    sdt: "",
+    diaChi: "",
+    ghiChu: "",
+    khachTra: 0,
+    tongTien: 0,
   });
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
@@ -132,16 +142,7 @@ const PlaceOrder = () => {
       return [];
     }
   };
-  const tableColumns = [
-    <th key="stt">STT</th>,
-    <th key="action"></th>,
-    <th key="sku">ID</th>,
-    <th key="name">TÊN</th>,
-    <th key="stock">TỒN KHO</th>,
-    <th key="quantity">SỐ LƯỢNG</th>,
-    <th key="price">ĐƠN GIÁ</th>,
-    <th key="total">THÀNH TIỀN</th>,
-  ];
+
 
   const handleDeleteProduct = (productId) => {
     setBooks((prevBooks) => prevBooks.filter((p) => p.sachId !== productId));
@@ -209,9 +210,9 @@ const PlaceOrder = () => {
         </button>
       </div>
     </td>,
-    <td key={`price-${book.sachId}`}>{formatCurrency(book.donGia)}</td>,
+    <td key={`price-${book.sachId}`}>{CommonUtils.formatPrice(book.donGia)}</td>,
     <td key={`total-${book.sachId}`}>
-      {formatCurrency(book.donGia * book.quantity)}
+      {CommonUtils.formatPrice(book.donGia * book.quantity)}
     </td>,
   ]);
 
@@ -221,18 +222,45 @@ const PlaceOrder = () => {
   );
 
   const moneyChange = (money) => {
-    return total - formData.customerPayment;
+    return money - total > 0 ? money - total : 0;
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
+    if (total === 0) {
+      toast.error("Vui lòng thêm sách vào đơn hàng!");
+      return;
+    }
     if (selectedPayment === "bank") {
       setQrDialog({
         open: true,
         countdown: 30,
       });
     } else {
-      // Handle cash payment
-      toast.success("Thanh toán thành công!");
+      const response = await apiServices.adminSale({
+        ...formData,
+        tenKhachHang: formData.tenKhachHang??"Khách lẻ",
+        tongTien: total,
+        phuongThucThanhToan: selectedPayment,
+        chiTietDonHang: books.map((book) => {
+          return {
+            sachId: book.sachId,
+            soLuong: book.quantity,
+            donGia: book.donGia,
+          };
+        }),
+      });
+      if (response.success) {
+        toast.success("Thanh toán thành công!");
+        setFormData({
+          tenKhachHang: "",
+          sdt: "",
+          diaChi: "",
+          ghiChu: "",
+          khachTra: 0,
+          tongTien: 0,
+        });
+        setBooks([]);
+      }
     }
   };
 
@@ -256,8 +284,8 @@ const PlaceOrder = () => {
               <input
                 type="text"
                 placeholder="Nhập tên khách hàng"
-                name="customerName"
-                value={formData.customerName}
+                name="tenKhachHang"
+                value={formData.tenKhachHang}
                 onChange={handleChange}
               />
             </div>
@@ -266,8 +294,8 @@ const PlaceOrder = () => {
               <input
                 type="text"
                 placeholder="Nhập sđt"
-                name="customerPhone"
-                value={formData.customerPhone}
+                name="sdt"
+                value={formData.sdt}
                 onChange={handleChange}
               />
             </div>
@@ -277,8 +305,18 @@ const PlaceOrder = () => {
               <input
                 type="text"
                 placeholder="Nhập địa chỉ"
-                name="customerAddress"
-                value={formData.customerAddress}
+                name="diaChi"
+                value={formData.diaChi}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Ghi chú</label>
+              <input
+                type="text"
+                placeholder="Nhập ghi chú"
+                name="ghiChu"
+                value={formData.ghiChu}
                 onChange={handleChange}
               />
             </div>
@@ -294,7 +332,7 @@ const PlaceOrder = () => {
           <div className="sale-info-total">
             <div style={{ fontWeight: 600 }}>
               Tổng tiền
-              <span style={{ float: "right" }}>{formatCurrency(total)}</span>
+              <span style={{ float: "right" }}>{CommonUtils.formatPrice(total)}</span>
             </div>
             <hr
               style={{
@@ -307,7 +345,7 @@ const PlaceOrder = () => {
               <div style={{ fontWeight: 600 }}>
                 KHÁCH PHẢI TRẢ
                 <span style={{ float: "right", color: "#d32f2f" }}>
-                  {formatCurrency(total)}
+                  {CommonUtils.formatPrice(total)}
                 </span>
               </div>
               <div
@@ -329,9 +367,9 @@ const PlaceOrder = () => {
                     outline: "none",
                   }}
                   type="number"
-                  value={formData.customerPayment}
+                  value={formData.khachTra}
                   onChange={handleChange}
-                  name="customerPayment"
+                  name="khachTra"
                   min={0}
                   required
                 />
@@ -340,7 +378,7 @@ const PlaceOrder = () => {
               <div>
                 Tiền thừa trả khách{" "}
                 <span style={{ float: "right" }}>
-                  {formatCurrency(moneyChange(formData.customerPayment))}
+                  {CommonUtils.formatPrice(moneyChange(formData.khachTra))}
                 </span>
               </div>
             </div>
@@ -427,7 +465,7 @@ const PlaceOrder = () => {
                 marginBottom: "8px",
               }}
             >
-              Số tiền: {formatCurrency(total)}
+              Số tiền: {CommonUtils.formatPrice(total)}
             </div>
             <div
               style={{

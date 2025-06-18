@@ -1,80 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Cart.css";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Link } from "react-router-dom";
-
-const mockCart = [
-  {
-    sachId: 1,
-    ten: "Dế mèn phiêu lưu ký",
-    price: 20000,
-    hinhAnh:
-      "https://cdn2.tuoitre.vn/thumb_w/480/471584752817336320/2025/5/21/base64-17478176868771275704421.png",
-    quantity: 1,
-  },
-  {
-    sachId: 2,
-    ten: "Tắt đèn",
-    price: 78000,
-    hinhAnh:
-      "https://cdn2.tuoitre.vn/thumb_w/480/471584752817336320/2025/5/21/base64-17478176868771275704421.png",
-    quantity: 1,
-  },
-  {
-    sachId: 3,
-    ten: "Chiếc lược ngà",
-    price: 50000,
-    hinhAnh:
-      "https://cdn2.tuoitre.vn/thumb_w/480/471584752817336320/2025/5/21/base64-17478176868771275704421.png",
-    quantity: 1,
-  },
-];
-
-const formatCurrency = (num) => num.toLocaleString("vi-VN") + "đ";
+import { Link, useNavigate } from "react-router-dom";
+import apiServices from "../../services/apiServices";
+import { toast } from "react-toastify";
+import CommonUtils from "../../utils/CommonUtils";
 
 const Cart = () => {
-  const [cart, setCart] = useState(mockCart);
+  const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
-  const handleQuantity = (id, value) => {
+  const fetchCart = async () => {
+    const response = await apiServices.getCart();
+    if (response.success) {
+      setCart(response.data.giohangs);
+    }
+  };
+
+  const handleQuantity = async (id, value) => {
     const newQuantity =
       typeof value === "number"
         ? Math.max(1, value)
         : Math.max(1, parseInt(value) || 1);
 
-    setCart((prev) =>
-      prev.map((item) =>
-        item.sachId === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    try {
+      const response = await apiServices.addToCart({
+        sachId: id,
+        soLuong: newQuantity,
+      });
+      if (response.success) {
+        // toast.success("Cập nhật số lượng thành công");
+        setCart((prev) =>
+          prev.map((item) =>
+            item.sachId === id ? { ...item, soLuong: newQuantity } : item
+          )
+        );
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handlePayment = () => {
+    if (cart.length === 0) {
+      toast.error("Vui lòng thêm sách vào giỏ hàng");
+      return;
+    }
+    navigate("/payment", { state: { cartItems: cart, total: total } });
   };
 
   const handleRemove = (id) => {
     setCart((prev) => prev.filter((item) => item.sachId !== id));
   };
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce(
+    (sum, item) => sum + item.sach.donGia * item.soLuong,
+    0
+  );
 
   return (
     <div className="cart-container">
-      <h1 className="cart-title">SẢN PHẨM ĐÃ THÊM</h1>
+      <h1 className="cart-title">SÁCH ĐÃ THÊM VÀO GIỎ HÀNG</h1>
       <div className="cart-list">
+        {cart.length === 0 ? (
+          <div className="cart-empty" style={{ textAlign: "center", fontSize: "20px", fontWeight: "bold", color: "red" }}>Giỏ hàng trống</div>
+        ) : (
+          <>
         {cart.map((item) => (
           <div key={item.sachId} className="cart-item">
             <img
-              src={item.hinhAnh}
-              alt={item.ten}
+              src={`${process.env.REACT_APP_API_URL}/${item.sach.hinhAnh}`}
+              alt={item.sach.ten}
               className="cart-item-image"
             />
             <div className="cart-item-info">
-              <div className="cart-item-name">{item.ten}</div>
+              <div className="cart-item-name">{item.sach.ten}</div>
               <div className="cart-item-price">
-                {formatCurrency(item.price)}
+                {CommonUtils.formatPrice(item.sach.donGia)}
               </div>
             </div>
             <div className="cart-item-quantity-controls">
               <button
-                onClick={() => handleQuantity(item.sachId, item.quantity - 1)}
+                onClick={() => handleQuantity(item.sachId, item.soLuong - 1)}
                 className="cart-qty-btn"
               >
                 -
@@ -82,19 +93,19 @@ const Cart = () => {
               <input
                 type="number"
                 min="1"
-                value={item.quantity}
+                value={item.soLuong}
                 onChange={(e) => handleQuantity(item.sachId, e.target.value)}
                 className="cart-qty-input"
               />
               <button
-                onClick={() => handleQuantity(item.sachId, item.quantity + 1)}
+                onClick={() => handleQuantity(item.sachId, item.soLuong + 1)}
                 className="cart-qty-btn"
               >
                 +
               </button>
             </div>
             <div className="cart-item-total">
-              {formatCurrency(item.price * item.quantity)}
+              {CommonUtils.formatPrice(item.sach.donGia * item.soLuong)}
             </div>
             <IconButton
               variant="contained"
@@ -106,18 +117,20 @@ const Cart = () => {
             </IconButton>
           </div>
         ))}
+        </>
+        )}
       </div>
       <div className="cart-summary">
         <div className="cart-total">
           Tổng tiền :{" "}
-          <span className="cart-total-value">{formatCurrency(total)}</span>
+          <span className="cart-total-value">{CommonUtils.formatPrice(total)}</span>
         </div>
         <div className="cart-actions">
-          <button className="cart-action-btn cart-continue-btn">
-            Tiếp Tục Mua Hàng
-          </button>
-          <button className="cart-action-btn cart-confirm-btn">
-            <Link to="/payment">Xác Nhận</Link>
+          <button
+            className="cart-action-btn cart-confirm-btn"
+            onClick={handlePayment}
+          >
+            Xác Nhận
           </button>
         </div>
       </div>

@@ -62,6 +62,8 @@
   border-radius: 6px;
   margin-bottom: 16px;
   margin-top: 8px;
+  background-color: #f5f5f5;
+  display: block;
 }
 
 .book-title {
@@ -94,7 +96,7 @@
 
 .add-to-cart-btn {
   width: 100%;
-  background: #af1b1b;
+  background: #e94444;
   color: #fff;
   font-size: 1.1rem;
   font-weight: 600;
@@ -106,5 +108,5 @@
 }
 
 .add-to-cart-btn:hover {
-  background: #e94444;
+  background: #af1b1b;
 }
